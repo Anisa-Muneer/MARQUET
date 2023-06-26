@@ -1,0 +1,103 @@
+<%- include('../layouts/adminLayout/header.ejs') %>
+<%- include('../layouts/adminLayout/sidebar.ejs') %>
+<%- include('../layouts/adminLayout/navbar.ejs') %>
+
+
+        <div class="main-panel bg-warning">
+            <div class="content-wrapper">
+                <div class="row bg-dark">
+
+
+
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card-body">
+                            <div class="card-body">
+                                <h4 class="card-title">Order Details</h4> 
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-white ">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">No</th>
+                                                <th scope="col">Image</th>
+                                                <th scope="col">product Name</th>
+                                                <th scope="col">product Brand</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
+                                              </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                            <% if(order.products.length > 0){
+                                                order.products.forEach((orders,i)=>{ 
+                                                  %>
+                                              <tr>
+                                                <td><%= i + 1 %></td>
+                                                <td class="py-1">
+                                                
+                                                    <img style="width: 45px; height: 45px;" src="/adminAsset/adminImages/<%= orders.productId.image[0]%>" alt="image" />
+                                                </td>
+                                                <td><%= orders.productId.product%></td>
+                                                <td><%= orders.productId.Category%></td>
+                                                <td><%= orders.productPrice%></td>
+                                                <td><%= orders.status%></td>
+                                                <% if (orders.status === 'Delivered') { %>
+                                                    <td>Delivered</td>
+                                                <%}else if(orders.status === 'return'){ %>
+                                                    <td>
+                                                        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBa">View Reason</button> -->
+                                                    </td>
+                                                <% } else if (orders.status === 'cancelled') { %>
+                                                    <td>
+                                                        <button type="button" class="btn disabled">cancelled</button>
+                                                    </td>
+                                                <% } else { %>
+                                                <td> 
+                                                    
+                                                        <select class="form-control w-50" name="status" onchange="changeStatus(this.value, '<%= orders._id %>', '<%= order.userId %>')">
+                                                            <option selected ="Shipped">Placed</option>
+                                                            <option value="Shipped">Shipped</option>
+                                                            <option value="Delivered">Delivered</option>
+                                                            <option value="Out for Delivery">Out for Delivery</option>
+                                                            <option value="return">return</option>
+                                                        </select>
+                                                      
+                                            <%}%>
+                                                </td>
+                                              </tr>
+                                              <%
+                                                })
+                                                }else{ %>
+                                                    <h1 class="d-flex justify-content-center">You Have No Orders</h1>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            <script>
+                function changeStatus(status, orderId, userId) {
+                    $.ajax({
+                        method: 'post',
+                        url: '/admin/changeStatus',
+                        data: {
+                            status: status,
+                            orderId: orderId,
+                            userId: userId
+                        },
+                        success: (response) => {
+                            location.reload();
+                        }
+                    });
+                }
+            </script>
+
+        
+<%- include('../layouts/adminLayout/footer.ejs') %>

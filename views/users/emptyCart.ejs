@@ -1,0 +1,83 @@
+<%- include('../layouts/userLayout/header.ejs') %>
+<%- include('../layouts/userLayout/navbar.ejs') %>
+
+<section id="breadcrumb">
+  <div class="container">
+    <div class="le-breadcrumb inline">
+      <div class="iconic-nav-bar">
+        <div class="icon-holder">
+          <i class="fa fa-chain"></i>
+          <span class="triangle"></span>
+        </div>
+        <div class="bar">
+          <ul>
+            <li><a href="/">homepage</a></li>
+            <li class="active">shopping cart</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cart" class="page-holder">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="shopping-cart-page box">
+          <div class="icon-holder small badge-style">
+            <i class="fa fa-shopping-cart"></i>
+            <span class="triangle"></span>
+          </div>
+          <div id="reloadDiv" class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="col-xs-12 col-md-2">preview</th>
+                  <th class="col-xs-12 col-md-5">product</th>
+                  <th class="col-xs-12 col-md-2 price-column">price</th>
+                  <th class="col-xs-12 col-md-2">quantity</th>
+                  <th class="col-xs-12 col-md-1 price-column">total</th>
+                  <th class="col-xs-12 col-md-2">&nbsp;</th>
+                </tr>
+              </thead>
+             
+            </table>
+            <h1>Cart is empty</h1>
+          </div>
+          <div class="merged-buttons">
+            <a href="/shop" class="le-btn small">Continue Shopping</a>
+            <a href="/checkOut" class="le-btn small">Checkout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="newsletter" class="section-newsletter">
+  <div class="container">
+    <div class="col-xs-12 col-md-1">
+      <div class="icon-holder big">
+        <i class="fa fa-newspaper-o"></i>
+        <span class="triangle"></span>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-4">
+      <div class="text">
+        Sign up for our newsletter to<br>
+        get the best offers and news.
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-7">
+      <!-- <form class="subscribe-form">
+        <input data-placeholder="Enter Your Email Here..." class="le-input col-xs-12 col-md-10">
+        <button type="submit" class="le-btn icon-btn fa fa-send"></button>
+      </form> -->
+    </div>
+  </div>
+</section>
+
+
+
+<%- include('../layouts/userLayout/footer.ejs') %>

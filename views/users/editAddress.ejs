@@ -1,0 +1,92 @@
+ <!-- Google Web Fonts -->
+ <link rel="preconnect" href="https://fonts.gstatic.com">
+ <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+
+ <!-- Font Awesome -->
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+ <!-- Libraries Stylesheet -->
+ <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+ <!-- Customized Bootstrap Stylesheet -->
+ <link href="/userAsset/css/style.css" rel="stylesheet">
+
+
+
+ <%- include('../layouts/userLayout/header.ejs') %>
+ 
+ <%- include('../layouts/userLayout/navbar.ejs') %>
+
+ <div class="container-fluid pt-5">
+ <div class="row px-xl-5">
+     <div class="col-lg-8">
+         <div class="mb-4">
+             <h4 class="font-weight-semi-bold mb-4">Billing Address</h4>
+             <form action="" method="post">
+             <div class="row">
+               
+                 <div class="col-md-6 form-group">
+                     <label>First Name</label>
+                     <input class="form-control" name="userName" type="text" placeholder=""  value="<%= address.userName %>" >
+                 </div>
+                 <!-- <div class="col-md-6 form-group">
+                     <label>Last Name</label>
+                     <input class="form-control" type="text" placeholder="Doe">
+                 </div> -->
+                 <div class="col-md-6 form-group">
+                     <label>E-mail</label>
+                     <input class="form-control" type="text" placeholder="example@email.com"  value="<%= address.email %>" >
+                 </div>
+                 <div class="col-md-6 form-group">
+                     <label>Mobile No</label>
+                     <input class="form-control" name="mobile" type="text" placeholder="+123 456 789"  value="<%= address.mobile %>"  >
+                 </div>
+                 <div class="col-md-6 form-group">
+                    <label>Alternative Mobile No</label>
+                    <input class="form-control" name="mobile2" type="text" placeholder="+123 456 789"  value="<%= address.altrenativeMob %>" >
+                </div>
+                 <div class="col-md-6 form-group">
+                     <label>House Name</label>
+                     <input class="form-control" name="house" type="text" placeholder="" value="<%= address.houseName %>" >
+                 </div>
+                 <div class="col-md-6 form-group">
+                     <label>Landmark</label>
+                     <input class="form-control" name="landmark" type="text" placeholder="" value="<%= address.landmark %>" >
+                 </div>
+                 <div class="col-md-6 form-group">
+                     <label>Country</label>
+                     <select class="custom-select">
+                         <option selected>United States</option>
+                         <option>Afghanistan</option>
+                         <option>Albania</option>
+                         <option>Algeria</option>
+                         <option>India</option>
+                     </select>
+                 </div>
+                 <div class="col-md-6 form-group">
+                     <label>state</label>
+                     <input class="form-control" name="state" type="text" placeholder=""value="<%= address.state %>" >
+                 </div>
+                 <div class="col-md-6 form-group">
+                     <label>City</label>
+                     <input class="form-control" name="city" type="text" placeholder="" value="<%= address.city %>" >
+                 </div>
+                 <div class="col-md-6 form-group">
+                     <label>ZIP Code</label>
+                     <input class="form-control" name="pincode" type="text" placeholder=""  value="<%= address.pincode %>" >
+                 </div>
+                 <div class="col-md-6 form-group">
+                    <button type="submit" class="btn btn-success font-weight-bold" value="addAddress">Update</button>
+
+                 </div>
+                
+             </div>
+            </form>
+         </div>
+        
+     </div>
+    
+ </div>
+</div>
+
+<%- include('../layouts/userLayout/footer.ejs') %>  

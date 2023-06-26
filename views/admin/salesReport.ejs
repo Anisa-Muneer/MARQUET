@@ -1,0 +1,96 @@
+<%- include('../layouts/adminLayout/header.ejs') %>
+<%- include('../layouts/adminLayout/sidebar.ejs') %>
+<%- include('../layouts/adminLayout/navbar.ejs') %>
+
+
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Sales Report</h4>
+  
+        <div class="table-responsive" style="overflow-x: auto; border-radius: 12px;">
+          <table class="table table-striped" id="example" style="width: 100%;">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>User Name</th>
+                <th>Order No</th>
+                <th>Total Amount</th>
+                <th>Quantity</th>
+                <th>Payment Mode</th>
+                <th>Status</th>
+                <th>Order Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% order.forEach((orderItem) => { %>
+              <tr>
+                <td><%= orderItem.products.productDetails.product %></td>
+                <td><%= orderItem.userName %></td>
+                <td><%= orderItem.products._id %></td>
+                <td><%= orderItem.products.totalPrice %></td>
+                <td><%= orderItem.products.count %></td>
+                <td><%= orderItem.paymentMethod %></td>
+                <td><%= orderItem.products.status %></td>
+                <td><%= orderItem.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g,'-') %></td>
+              </tr>
+              <%})%>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
+
+<style>
+    
+    .dt-button.buttons-excel,
+    .dt-button.buttons-csv,
+    .dt-button.buttons-pdf {
+      background-color: #25cf0b;
+      /* Change background color */
+      color: white;
+      /* Change text color */
+      border-radius: 5px;
+      /* Add rounded corners */
+      border: none;
+      /* Remove border */
+      margin: 10px;
+      /* Add some spacing between buttons */
+      padding: 8px 16px;
+      /* Increase padding */
+    }
+  </style>
+
+
+  <style>
+    .dt-button.buttons-copy,
+    .dt-button.buttons-print {
+      background-color: #ec4503;
+      color: white;
+      border-radius: 5px;
+      border: none;
+      margin-right: 10px;
+      padding: 8px 16px;
+    }
+
+    
+  </style>
+<script>
+    
+    $(document).ready(function () {
+      $('#example').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+           'excel', 'pdf'
+        ]
+      });
+    });
+  </script>
+
+
+<%- include('../layouts/adminLayout/footer.ejs') %>

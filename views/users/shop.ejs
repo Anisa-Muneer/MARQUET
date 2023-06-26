@@ -1,0 +1,408 @@
+<%- include('../layouts/userLayout/header.ejs') %>
+<%- include('../layouts/userLayout/navbar.ejs') %>
+
+
+
+<section id="breadcrumb">
+
+    <div class="container">
+      <div class="le-breadcrumb inline">
+        <div class="iconic-nav-bar">
+          <div class="icon-holder">
+            <i class="fa fa-chain"></i>
+            <span class="triangle"></span>
+          </div>
+          <div class="bar">
+            <ul>
+              <li><a href=" /">homepage</a></li>
+             
+              <li class="active">products</li>
+              <!-- <li><a href="/singleProduct">Single Product</a></li> -->
+            </ul>
+
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <section id="products-grid-sidebar" class="section-products-grid">
+    <div class="container">
+      <div class="col-xs-12 col-md-3">
+        <div class="sidebar">
+          <div class="accordion-widget category-accordions widget">
+            <div class="icon-holder small">
+              <i class="fa fa-chain"></i>
+              <span class="triangle"></span>
+            </div>
+            <h2>categories</h2>
+            <div class="accordion">
+              <div class="accordion-group">
+                <!-- <div class="accordion-heading">
+                  <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
+                    shoes and clothes
+                  </a>
+                </div> -->
+               
+             
+                
+                <div id="collapseOne" class="accordion-body collapse in">
+                  <div class="accordion-inner">
+                    
+
+                    <ul>
+                      <% if(category.length>0){
+                                                for(let i=0;i<category.length;i++){ %>
+
+                                                    <li>
+                                                        <div class="ec-sidebar-block-item">
+                                                           
+
+                                                              <a href="/filterCategory/<%= category[i].categoryName %>">
+                                                                <%= category[i].categoryName %>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+
+                                                    <% } } %>
+                      
+                    </ul>
+                  
+                  </div>
+                </div>
+               
+              </div>
+
+              
+
+              
+          </div>
+        </div> 
+
+
+
+
+
+          <div class="price-filter widget">
+            <div class="icon-holder small">
+              <i class="fa fa-dollar"></i>
+              <span class="triangle"></span>
+            </div>
+            <h2>price filter</h2>
+            <div class="price-range-holder">
+
+              <input type="text" class="price-slider" value="">
+              <span class="min-max">
+                Price:Low To High
+              </span>
+              <span class="filter-button">
+                <a href="/price-sort/<%= 1 %>">filter</a>
+              </span>
+
+              <input type="text" class="price-slider" value="">
+              <span class="min-max">
+                Price:High To Low
+              </span>
+              <span class="filter-button">
+                <a href="/price-sort/<%= -1 %>">filter</a>
+              </span>
+            </div>
+
+
+
+
+
+          </div>
+
+
+          
+        </div>
+
+      </div>
+
+      <div class="col-xs-12 col-md-9 ">
+       
+        <div class="controller-nav-bar row">
+          <div class="col-xs-12 col-sm-9 col-md-9">
+            <select class="ctrl-item selectpicker capital" data-style="btn-inverse">
+              <option>sort by price - Ascending</option>
+              <option>sort by price - Descending</option>
+              <option>sort A-Z</option>
+              <option>sort z-a</option>
+            </select>
+
+            <div class="ctrl-item inline">
+              Show
+
+              <select class="selectpicker capital" data-width="70px" data-style="btn-inverse">
+                <option>10</option>
+                <option>20</option>
+                <option>30</option>
+                <option>40</option>
+                <option>all</option>
+
+              </select>
+
+              Products Per Page
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-3 col-md-3 ">
+            <div class="grid-list-buttons">
+              <ul class="list-inline">
+                <li class="active"><a data-toggle="tab" href="#grid-view"><i class="fa fa-th-large"></i> Grid</a></li>
+                <li><a data-toggle="tab" href="#list-view"><i class="fa fa-th-list"></i> List</a></li>
+
+              </ul>
+            </div>
+          </div> 
+        </div>
+
+        <div class="product-grid tab-content">
+          <!--grid view starts here-->
+
+          <div id="grid-view" class="tab-pane active">
+            <div class="products-holder simple-grid">
+              <div class="row ">
+                <% if(products.length>0){
+                    for(let i=0;i<products.length;i++){%>
+
+               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 ">
+                  <div class="product-item">
+                    <div class="head">
+                      <div class="">
+                        <a href="/singleProduct/<%=products[i]._id%>">  <img  class="img-fluid w-100" src="/adminAsset/adminImages/<%=products[i].image[0]%>" alt=""></a>
+                      </div>
+
+                      <div class="price">
+                        <!-- <div class="price-old">
+                          <span class="currency">$</span>
+                        </div> -->
+                        <div class="price-current">
+                          <span class="currency">$</span><%=products[i].Price%>
+                        </div>
+                      </div>
+                      
+                      
+                    </div>
+                    <div class="body">
+                      <h3><%=products[i].product%></h3>
+                      <div class="excerpt">
+                        <%=products[i].description%>
+                      </div>
+                      <div class="excerpt">
+                        <%=products[i].Category%>
+                      </div>
+
+                      <div class="merged-buttons">
+                        <!--   -->
+                        <a  onclick="addToCart('<%= products[i]._id %>')" ><button class="btn-add-to-cart le-btn btn-iconic ">to cart</button>
+                        </a>
+
+                        <a onclick="addToWishlist('<%= products[i]._id %>')" > <button class="btn-add-to-wishlist le-btn btn-iconic">wishlist</button>
+                        </a> 
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <% } } %>
+                
+               
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+      </div>
+    </div>
+  </section>
+  <br>
+  <div class="text-center">
+  <%
+  for(let j=1;j<=totalPages;j++){
+    %>
+   
+  <a href="?page=<%= j%>">
+    <button class="bt-sm bg-success"><%= j%></button>
+  </a>
+
+
+    <%
+  }
+  %>
+</div>
+
+
+
+<section id="newsletter" class="section-newsletter">
+    <div class="container">
+
+    
+      <div class="col-xs-12 col-md-1">
+        <div class="icon-holder big">
+          <i class="fa fa-newspaper-o"></i>
+          <span class="triangle"></span>
+        </div>
+      </div>
+        <div class="col-xs-12 col-md-4">
+        <div class="text">
+          sign up for our newsletter to<br>
+          get best offers and news.
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-7">
+        <form class="subscribe-form">
+          <input data-placeholder="Enter Your Email Here..." class="le-input col-xs-12 col-md-10">
+          <button type="submit" class="le-btn icon-btn fa fa-send"></button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <section class="section-brands-slider">
+    <div class="container">
+      <!-- <a href="#next" class="brands-next btn-next"></a>
+      <a href="#prev" class="brands-prev btn-prev"></a> -->
+      <div class="brands-slider default-carousel owl-carousel">
+        <div class="brand-item">
+          <a href="#">
+            <img alt="" src="/userAsset/images/brands01.png">
+          </a>
+        </div>
+        <div class="brand-item">
+          <a href="#">
+            <img alt="" src="/userAsset/images/brands02.png">
+          </a>
+        </div>
+        <div class="brand-item">
+          <a href="#">
+            <img alt="" src="/userAsset/images/brands03.png">
+          </a>
+        </div>
+        <div class="brand-item">
+          <a href="#">
+            <img alt="" src="/userAsset/images/brands04.png">
+          </a>
+        </div>
+        <div class="brand-item">
+          <a href="#">
+            <img alt="" src="/userAsset/images/brands05.png">
+          </a>
+        </div>
+
+
+        <div class="brand-item">
+          <a href="#">
+            <img alt="" src="/userAsset/images/brands02.png">
+          </a>
+        </div>
+        <div class="brand-item">
+          <a href="#">
+            <img alt="" src="/userAsset/images/brands04.png">
+          </a>
+        </div>
+        <div class="brand-item">
+          <a href="#">
+            <img alt="" src="/userAsset/images/brands01.png">
+          </a>
+        </div>
+        <div class="brand-item">
+          <a href="#">
+            <img alt="" src="/userAsset/images/brands03.png">
+          </a>
+        </div>
+        <div class="brand-item">
+          <a href="#">
+            <img alt="" src="/userAsset/images/brands05.png">
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+
+
+ </div>
+
+
+ <script>
+  function addToCart(productId){
+      $.ajax({
+          url:'/addToCart/',
+          method:'post',
+          data:{
+              id:productId
+          },
+          success:(response)=>{  
+              if(response.success){
+                  swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: 'Product added to cart',
+                  showConfirmButton: false,
+                  timer: 1500,
+                  });
+              }
+          }
+      })
+  }
+
+  function addToWishlist(productId){
+      $.ajax({
+          url:'/addToWishlist',
+          method:'post',
+          data:{
+              id:productId
+          },
+          success:(response)=>{  
+              if(response.success){
+                  swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: 'Product added to wishlist',
+                  showConfirmButton: false,
+                  timer: 1500,
+                  });
+              }
+          }
+      })
+  }
+
+  function filterCategory(category){
+    $.ajax({
+      url:"/filterCategory",
+      method:'post',
+      dataType:'json',
+      data:{category:category},
+      success: (response)=>{
+        if(response.success){
+          $('$reloadDiv').html(response.html);
+        }
+      },
+      error:(error)=>{
+        console.log(error.message);
+      },
+   },);
+  }
+
+</script>
+
+
+
+
+
+
+
+<%- include('../layouts/userLayout/footer.ejs') %>     

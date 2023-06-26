@@ -1,0 +1,77 @@
+<%- include('../layouts/adminLayout/header.ejs') %>
+<%- include('../layouts/adminLayout/sidebar.ejs') %>
+<%- include('../layouts/adminLayout/navbar.ejs') %>
+
+<div class="card-body">
+  <h3 class="card-title">Edit Banner</h3>
+
+  <form action="" method="POST" class="form-group m-2 mt-5 pt-5" enctype="multipart/form-data">
+    
+    
+    <br><br>
+
+    
+
+   
+
+    <label>DESCRIPTION</label>
+    <input type="text" class="form-control form-control-lg" name="description"
+      value="<%= banners.description %>" required>
+    <br><br>
+
+    <div class="form-group">
+      <label>File upload</label>
+      <div class="input-group col-xs-12">
+        <% if (banners.image && banners.image.length > 0) { %>
+          <% banners.image.forEach((x, index) => { %>
+            <img src="/adminAsset/adminImages/<%= x %>" alt="" width="60px" height="50">
+          <% }); %>
+        <% } %>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Edit Image
+    </button>
+
+    <br><br>
+
+    <input type="hidden" name="id" value="<%= banners._id %>">
+    <input class="btn btn-block btn-facebook auth-form-btn" type="submit" value="Update Banner">
+  </form>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Image Editing</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- form starts -->
+      <form action="/admin/editBanner/updateimage/<%- banners._id %>" method="post" enctype="multipart/form-data">
+        <div class="modal-body">
+          <input multiple type="file" class="form-control" id="basic-default-name" name="image" />
+          <br>
+
+          <% if (banners.image && banners.image.length > 0) { %>
+            <% banners.image.forEach((x, index) => { %>
+              <img class="mb-3" src="/adminAssets/adminImages/<%= x %>" alt="banners image" width="60px" height="50">
+              <a href="/admin/delete-image/<%= x %>/<%= banners._id %>">
+                <button type="button" class="btn btn-danger mb-4" data-bs-dismiss="modal">Delete</button>
+              </a>
+              <br>
+            <% }); %>
+          <% } %>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<%- include('../layouts/adminLayout/footer.ejs') %>

@@ -1,0 +1,74 @@
+<%- include('../layouts/adminLayout/header.ejs') %>
+<%- include('../layouts/adminLayout/sidebar.ejs') %>
+<%- include('../layouts/adminLayout/navbar.ejs') %>
+
+
+
+<div class="col-lg-10 grid-margin stretch-card" >
+  <div class="card" >
+    <div class="card-body">
+      <h4 class="card-title" >Banner</h4>
+      <div class="col-md pt-3 form-group text-right">
+      <a href="/admin/addBanner">  <button  class="btn btn-success font-weight-bold">Add Banner</button>
+    </a>
+</div>
+     
+      <div class="table-responsive"  style="border-radius: 12px">
+        <table class="table table-striped" >
+          <thead>
+            <tr>
+              <th>
+                    Image              
+                </th>
+              <th>
+                Description
+                </th>
+              <th>
+                Actions
+                </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <%
+            if(banners.length>0){
+              for(let i=0;i<banners.length;i++){
+                %>
+            
+            <tr>
+              <td class="py-1">
+                <img src="/adminAsset/adminImages/<%=banners[i].image%>" alt="image"/>
+              </td>
+             
+              <td>
+               <%=banners[i]. description %>
+              </td>
+              
+              <td>
+                
+                <a class="btn btn-success" href="/admin/editBanner/<%= banners[i]._id %>">
+                  Edit
+                </a>
+                <a class="btn btn-danger" href="deleteBanner?id=<%= banners[i]._id %>" onclick="return confirm('Are you sure you want to Delete <%= banners[i].banner %>?')">Delete</a>
+              </td>
+            </tr>
+            <%
+          }
+        }
+        %>  
+           
+         <%
+                  if(typeof message !== 'undefined'){
+                    %>
+                    <p style="color: red;"><%= message %></p>
+                    <%
+              
+                  }
+                  %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../layouts/adminLayout/footer.ejs') %>
