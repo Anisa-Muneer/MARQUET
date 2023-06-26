@@ -8,7 +8,7 @@ const mongoose = require ('mongoose');
         required :true,
     },
     stock:{
-        type:String,
+        type:Number,
         required:true
     },
     Price : {

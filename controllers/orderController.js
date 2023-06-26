@@ -43,7 +43,7 @@ const placeOrder = async (req, res,next) => {
         for (let i = 0; i < products.length; i++) {
           const pro = products[i].productId;
           const count = products[i].count;
-           await Product.findByIdAndUpdate({ _id: pro }, { $inc: { quantity: -count } });
+           await Product.findByIdAndUpdate({ _id: pro }, { $inc: { stock: -count } });
         }
   
         if (order.status === 'placed') {

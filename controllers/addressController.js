@@ -71,16 +71,9 @@ const insertAddress = async (req, res, next) => {
       const addressData = await address.save();
 
       if (addressData) {
-        console.log("here1111");
         const addresses = await Address.find(); // Renamed 'address' to 'addresses'
         console.log(addresses);
-        return res.render("checkout", {
-          address:addresses,
-          categoryData,
-          session,
-          userData,
-          products:productData
-        });
+        return res.redirect("/checkout");
       } else {
         console.log("here222");
 

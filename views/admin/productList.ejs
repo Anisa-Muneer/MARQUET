@@ -4,88 +4,53 @@
 
 
 
-<div class="col-lg-10 grid-margin stretch-card" >
-  <div class="card" >
+<div class="col-lg-12 grid-margin stretch-card">
+  <div class="card">
     <div class="card-body">
-      <h4 class="card-title" >Products</h4>
-     
-      <div class="table-responsive"  style="border-radius: 12px">
-        <table class="table table-striped" >
+      <h4 class="card-title">Products</h4>
+
+      <div class="table-responsive" style="overflow-x: auto; border-radius: 12px;">
+        <table class="table table-striped" style="width: 100%;">
           <thead>
             <tr>
-              <th>
-                    Image              
-                </th>
-              <th>
-                Product Name
-              </th>
-              <th>
-                Stock
-              </th>
-              <th>
-                Price
-              </th>
-              <th>
-               Category
-              </th>
-              
-              <th>
-                Description
-              </th>
-              <th>
-                Actions
-              </th>
+              <th>Image</th>
+              <th>Product Name</th>
+              <th>Stock</th>
+              <th>Price</th>
+              <th>Category</th>
+              <th>Description</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            <%
-                    if(products.length>0){
-                      for(let i=0;i<products.length;i++){
-                        %>
-            <tr>
-              <td class="py-1">
-                <img src="/adminAsset/adminImages/<%=products[i].image[0]%>" alt="image"/>
-              
-               
-              </td>
-              <td>
-                <%=products[i].product%>
-              </td>
-              <td>
-                <%=products[i].stock%>
-              </td>
-              <td>
-                <%=products[i].Price%>
-              </td>
-              <td>
-                <%=products[i].Category%>
-              </td>
-              <td>
-                <%=products[i].description%>
-              </td>
-              <td>
-                <a class="btn btn-success" href="/admin/editProductList/<%= products[i]._id %>">
-                  Edit
-                </a>
-                <a class="btn btn-danger" href="deleteProduct?id=<%= products[i]._id %>" onclick="return confirm('Are you sure you want to Delete <%= products[i].product %>?')">Delete</a>
-              </td>
-            </tr>
-            <%
-          }
-        }
-        %>  
-         <%
-                  if(typeof message !== 'undefined'){
-                    %>
-                    <p style="color: red;"><%= message %></p>
-                    <%
-              
-                  }
-                  %>
+            <% if (products.length > 0) { %>
+              <% for (let i = 0; i < products.length; i++) { %>
+                <tr>
+                  <td class="py-1">
+                    <img src="/adminAsset/adminImages/<%= products[i].image[0] %>" alt="image" />
+                  </td>
+                  <td><%= products[i].product %></td>
+                  <td><%= products[i].stock %></td>
+                  <td><%= products[i].Price %></td>
+                  <td><%= products[i].Category %></td>
+                  <td><%= products[i].description %></td>
+                  <td>
+                    <a class="btn btn-success" href="/admin/editProductList/<%= products[i]._id %>">Edit</a>
+                    <a class="btn btn-danger" href="deleteProduct?id=<%= products[i]._id %>" onclick="return confirm('Are you sure you want to delete <%= products[i].product %>?')">Delete</a>
+                  </td>
+                </tr>
+              <% } %>
+            <% } %>
+            <% if (typeof message !== 'undefined') { %>
+              <tr>
+                <td colspan="7" style="color: red;"><%= message %></td>
+              </tr>
+            <% } %>
           </tbody>
         </table>
       </div>
     </div>
   </div>
 </div>
+
 <%- include('../layouts/adminLayout/footer.ejs') %>

@@ -600,7 +600,7 @@ const priceSort = async(req,res,next) =>{
     .countDocuments();
     const id = parseInt(req.params.id)
    
-    const userData = await User.find({name:"Muhsina"})
+    const userData = await User.find()
     const categoryData = await Category.find({ is_delete: false });
     const session = req.session.user_id;
     const sortData = await Product.find({is_delete:false}).sort({Price:id})

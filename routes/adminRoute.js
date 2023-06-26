@@ -63,6 +63,8 @@ admin_route.get('/addBanner',auth.isLogin,bannerController.addBanner)
 admin_route.post('/addBanner',upload.upload.array('image',1),bannerController.insertBanner);
 admin_route.get('/deleteBanner',auth.isLogin,bannerController.deleteBanner)
 admin_route.get('/editBanner/:id',auth.isLogin,bannerController.editBanner);
+admin_route.post('/editBanner/:id',upload.upload.array("image", 1), bannerController.updateBanner);
+
 
 
 

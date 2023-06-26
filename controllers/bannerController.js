@@ -93,6 +93,32 @@ const editBanner = async(req,res)=>{
 }
 
 
+const updateBanner = async (req,res) =>{
+    if( req.body.description.trim() === "" ) {
+        const id = req.params.id
+        const bannerData = await Banner.findOne({_id:id})
+        
+        const adminData = await User.findById({_id:req.session.auser_id})
+        res.render('editBanner',{admin:adminData,banners: bannerData, message:"All fields required"})
+    }else{
+        try {
+            const arrayimg = []
+            for(file of req.files){
+                arrayimg.push(file.filename)
+            } 
+            const id = req.params.id
+            let c = await Banner.updateOne({_id:id},{$set:{
+                
+                description:req.body.description,
+            }})
+          
+            res.redirect('/admin/banner')
+        } catch (error) {
+            console.log(error.message);
+        }
+      }
+  }
+
 
 
 
@@ -101,5 +127,6 @@ module.exports={
     bannerList,
     insertBanner,
     deleteBanner,
-    editBanner
+    editBanner,
+    updateBanner
 }

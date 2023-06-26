@@ -223,7 +223,7 @@ var rzp1 = new Razorpay(options);
 
     function verifyPayment(payment,order){
     const amount2 = document.getElementById("total").innerHTML;
-    alert(amount2)
+ 
     $.ajax({
       url:"/verify-payment",
       method:"post",
@@ -240,10 +240,10 @@ var rzp1 = new Razorpay(options);
             title: 'Order Placed Successfully',
             showConfirmButton: false,
             showCancelButton: true,
-            cancelButtonText: "Go to Shop",
+            cancelButtonText: "Go to Orders",
         }).then((result) => {
             if (result.dismiss === swal.DismissReason.cancel) {
-              window.location.href = "/shop";
+              window.location.href = "/myOrders";
             }
           });
         }else{

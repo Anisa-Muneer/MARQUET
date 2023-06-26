@@ -215,15 +215,16 @@ const addToCart = async (req,res)=>{
             },
           },
         ]);
+        const Total = total.length > 0 ? total[0].total : 0;
+        const totalAmount = Total ;
+        const products = cartData.products;
        
         if (req.session.user_id) {
           if (addressData) {
        
             if (addressData.addresses.length > 0) {
               const address = addressData.addresses;
-              const Total = total.length > 0 ? total[0].total : 0;
-              const totalAmount = Total ;
-              const products = cartData.products;
+              
               res.render("checkout", {
                 session,
                 Total,
@@ -237,6 +238,9 @@ const addToCart = async (req,res)=>{
               res.render("emptyCheckout", {
                 session,
                 userData,
+                products,
+                totalAmount,
+                Total,
                 categoryData,
                 message: "Add your delivery address",
               });
@@ -245,6 +249,9 @@ const addToCart = async (req,res)=>{
             res.render("emptyCheckout", {
               session,
               userData,
+              products,
+              totalAmount,
+              Total,
               categoryData,
               message: "Add your delivery address",
             });

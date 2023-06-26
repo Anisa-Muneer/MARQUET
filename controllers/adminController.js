@@ -128,7 +128,7 @@ const loadDashboard = async (req, res) => {
           $unwind: '$products'
         },
         {
-          $match: { 'products.status': 'Delivered', paymentMethod: 'onlinPayment' }
+          $match: { 'products.status': 'Delivered', paymentMethod: 'onlinePayment' }
         },
         {
           $group: {
@@ -145,6 +145,41 @@ const loadDashboard = async (req, res) => {
         console.log('No online orders found.');
       }
 
+
+     
+
+
+      const weeklySalesCursor = Order.aggregate([
+        {
+          $unwind: "$products"
+        },
+        {
+          $match: {
+            'products.status': 'Delivered'
+          }
+        },
+        {
+          $group: {
+            _id: { $dateToString: { format: "%d-%m-%Y", date: "$date" } },
+            sales: { $sum: '$products.totalPrice' }
+          }
+        },
+        {
+          $sort: { _id: 1 }
+        },
+        {
+          $limit: 7
+        }
+      ]);
+  
+      const weeklySales = await weeklySalesCursor.exec();
+      console.log(weeklySalesCursor);
+  
+      const dates = weeklySales.map(item => item._id);
+      const sales = weeklySales.map(item => item.sales);
+      const salesSum = (weeklySales.reduce((accumulator, item) => accumulator + item.sales, 0)).toFixed(2);
+  
+      console.log(sales, dates);
 
 
       const totalWalletResult = await Order.aggregate([
@@ -179,7 +214,9 @@ const loadDashboard = async (req, res) => {
         totalCod,
         totalOnline,
         totalWallet,
-        order
+        order,
+        sales,
+        dates
       });
     } catch (error) {
       console.log(error.message);
