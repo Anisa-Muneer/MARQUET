@@ -24,6 +24,7 @@ const categoryController  = require('../controllers/categoryController');
 const productController = require('../controllers/productController')
 const adminOrderController = require('../controllers/adminorderController')
 const bannerController = require('../controllers/bannerController')
+const coupenController = require('../controllers/coupenController')
 
 admin_route.get('/',auth.isLogout,adminController.loadLogin)
 admin_route.post('/',adminController.verifyLogin)
@@ -52,6 +53,7 @@ admin_route.get('/productlist',auth.isLogin,productController.productList);
 admin_route.get('/deleteProduct',auth.isLogin,productController.deleteProduct);
 admin_route.get('/editProductList/:id',auth.isLogin,productController.editproduct);
 admin_route.post('/editProductList/:id',upload.upload.array("image", 10), productController.updateProduct);
+admin_route.get('/deleteimg/:imgid/:prodid', auth.isLogin, productController.deleteimage);
 
 admin_route.get('/orderList',auth.isLogin,adminOrderController.loadOrderList)
 admin_route.get('/singleOrderList/:id',adminOrderController.loadSingleOrderList)
@@ -65,8 +67,8 @@ admin_route.get('/deleteBanner',auth.isLogin,bannerController.deleteBanner)
 admin_route.get('/editBanner/:id',auth.isLogin,bannerController.editBanner);
 admin_route.post('/editBanner/:id',upload.upload.array("image", 1), bannerController.updateBanner);
 
-
-
+admin_route.get('/coupenList',auth.isLogin,coupenController.loadCoupen)
+admin_route.post('/insertCoupen',coupenController.insertCoupen)
 
 
 

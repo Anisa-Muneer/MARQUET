@@ -86,4 +86,6 @@ user_route.get('/myOrders',auth.isLogin,orderController.loadOrder)
 user_route.get('/singleOrder/:id',orderController.loadSingleOrder)
 user_route.post('/cancelOrder',auth.isLogin,orderController.orderCancel)
 
+user_route.get('/invoiceDownload/:id',addressController.loadinvoice);
+
 module.exports= user_route

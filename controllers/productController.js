@@ -1,7 +1,8 @@
 const Product = require ('../models/productModel');
 const Category = require('../models/categoryModel.js')
 const User = require('../models/userModel');
-
+const fs = require('fs')
+const path = require('path')
 
 
 
@@ -132,12 +133,24 @@ const updateProduct = async (req,res) =>{
     }
 }
 
+const deleteimage = async (req, res, next) => {
+    try {
+      const imgid = req.params.imgid;
+      const prodid = req.params.prodid;
+      fs.unlink(path.join(__dirname, "../public/adminAsset/adminImages", imgid), () => { })
+      const productimg = await Product.updateOne({ _id: prodid }, { $pull: { image: imgid } })
+      res.redirect('/admin/editProductList/' + prodid)
+    } catch (err) {
+      next(err);
+    }
+  }
+
 module.exports = {
     AddProducts,
     insertproduct,
     productList,
     deleteProduct,
-    
+    deleteimage,
     editproduct,
     updateProduct,    
  }

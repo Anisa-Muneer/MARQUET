@@ -152,6 +152,7 @@ const placeOrder = async (req, res,next) => {
 
   
       if (updatedOrder) {
+        
         // if(orderData.paymentMethod === 'online-payment'){
         //    await User.findByIdAndUpdate({_id:req.session.user_id},{$inc:{wallet:cancelledAmount}})
         //    res.json({ success: true });

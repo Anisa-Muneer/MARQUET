@@ -83,8 +83,8 @@
 
           <% if (product.image && product.image.length > 0) { %>
             <% product.image.forEach((x, index) => { %>
-              <img class="mb-3" src="/adminAssets/adminImages/<%= x %>" alt="product image" width="60px" height="50">
-              <a href="/admin/delete-image/<%= x %>/<%= product._id %>">
+              <img class="mb-3" src="/adminAsset/adminImages/<%= x %>" alt="product image" width="60px" height="50">
+              <a href="/admin/deleteimg/<%= x %>/<%= product._id %>">
                 <button type="button" class="btn btn-danger mb-4" data-bs-dismiss="modal">Delete</button>
               </a>
               <br>
