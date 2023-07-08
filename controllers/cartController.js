@@ -3,6 +3,7 @@ const Product = require('../models/productModel')
 const Category = require('../models/categoryModel');
 const Cart = require('../models/cartModel')
 const Address = require('../models/addressModel')
+const Coupon = require('../models/couponModel')
 
 
 // ---------- Cart loading section start
@@ -198,11 +199,13 @@ const addToCart = async (req,res)=>{
         const session = req.session.user_id;
         const categoryData = await Category.find();
         const userData = await User.findOne({ _id: req.session.user_id });
+        const couponData = await Coupon.find({}); 
         const addressData = await Address.findOne({ userId: req.session.user_id });
         
         let cartData = await Cart.findOne({ userId: req.session.user_id }).populate(
           "products.productId"
         );
+     
         const total = await Cart.aggregate([
           { $match: { userId: req.session.user_id } },
           { $unwind: "$products" },
@@ -218,7 +221,7 @@ const addToCart = async (req,res)=>{
         const Total = total.length > 0 ? total[0].total : 0;
         const totalAmount = Total ;
         const products = cartData.products;
-       
+       console.log(products + "its my product");
         if (req.session.user_id) {
           if (addressData) {
        
@@ -232,7 +235,8 @@ const addToCart = async (req,res)=>{
                 totalAmount,
                 categoryData,
                 userData,
-                products
+                products,
+                coupon: couponData
               });
             } else {
               res.render("emptyCheckout", {
@@ -307,7 +311,7 @@ const addToCart = async (req,res)=>{
 module.exports={
     addToCart,
     loadCart,
-  deletecart,
+    deletecart,
     changeProductCount,
     loadCheckout,
     loadAddAddress

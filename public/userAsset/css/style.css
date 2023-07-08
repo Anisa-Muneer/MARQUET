@@ -9575,3 +9575,6 @@
     }
   }
   
+  .pe-none{
+    pointer-events: none;
+  }

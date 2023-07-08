@@ -31,15 +31,64 @@
     <%- include('../layouts/userLayout/navbar.ejs') %>
 
   
+    <style>
+      .ec-sidebar-fixed {
+        position: sticky;
+        top: 20px;
+        /* Adjust the top position according to your needs */
+      }
 
+      .coupon .kanan {
+        border-left: 1px dashed #ddd;
+        width: 40% !important;
+        position: relative;
+      }
+
+      .coupon .kanan .info::after,
+      .coupon .kanan .info::before {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: #dedede;
+        border-radius: 100%;
+      }
+
+      .coupon .kanan .info::before {
+        top: -10px;
+        left: -10px;
+      }
+
+      .coupon .kanan .info::after {
+        bottom: -10px;
+        left: -10px;
+      }
+
+      .coupon .time {
+        font-size: 1.6rem;
+      }
+    </style>
 
     <!-- Checkout Start -->
     <div class="container-fluid pt-5">
+      <div class="mt-5">
+        <span class="text-left">Coupon Discount</span>
+        <span class="text-right"><a class="ec-checkout-coupon">Apply Coupon</a></span>
+      </div>
+      <div class="ec-checkout-coupon-content mt-2">
+        <form>
+          <input class="ec-coupon" type="text" placeholder="Enter Your Coupon Code" id="code">
+          <button class="ec-coupon-btn button btn-primary"
+             onclick="applycoupon($('#code').val())">Apply</button>
+        </form>
+      </div>
         <form action="#" id="checkout">
         <div class="row px-xl-5">
           <div class="col-lg-8">
             <div class="mb-4">
-              <h4 class="font-weight-semi-bold mb-4">Billing Address</h4>
+              <h5 class="section-title position-relative text-uppercase mb-3">
+                <span class="bg-secondary pr-3">Billing Address</span>
+              </h5>
               <div class="row">
                 <div class="bg-light p-30 mb-5">
                   <div class="row">
@@ -113,7 +162,12 @@
                   <h6 class="font-weight-medium">Shipping</h6>
                   <h6 class="font-weight-medium">$10</h6>
                 </div>
+                <div class="d-flex justify-content-between">
+                  <h6 class="font-weight-medium">Discount</h6>
+                  <h6 class="font-weight-medium" id="discount"></h6>
+                </div>
               </div>
+              
               <div class="card-footer border-secondary bg-transparent">
                 <div class="d-flex justify-content-between mt-2">
                   <h5 class="font-weight-bold">Total</h5>
@@ -151,8 +205,7 @@
       
     <!-- Checkout End -->
 
-    
-    <%- include('../layouts/userLayout/footer.ejs') %>  
+  
 
 <script>
 
@@ -301,9 +354,56 @@ var rzp1 = new Razorpay(options);
           });
         }
         });
+      }
+
+       //apply coupen
+       
+    function applycoupon(code){
+      event.preventDefault();
+    const amount = document.getElementById('total').innerHTML;
+    $.ajax({
+      url:"/apply-coupon",
+      data:{  
+        code:code,
+        amount:amount
+      },
+      method:"post",
+      success:(response)=>{
+        if(response.user){
+          Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'This coupon already used!'
+              })
+        }else if(response.date){
+          console.log("coupon date expired");
+          Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'date expired!!!'
+              })
+        }else if(response.amountOkey){
+          document.getElementById('discount').innerHTML = response.disAmount
+          document.getElementById('total').innerHTML = response.disTotal
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Discount redeemed',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }else if(response.invalid){
+          Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Invalid Coupon!!!'
+              })
         }
+      }
+    })
+  }
+
+
+
     </script>
-    
-
-
-   
+    <%- include('../layouts/userLayout/footer.ejs') %>  

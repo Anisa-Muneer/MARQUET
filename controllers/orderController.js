@@ -120,6 +120,7 @@ const placeOrder = async (req, res,next) => {
       const orderData = await Order.findOne({_id : id }).populate(
         "products.productId"
       );
+
       const orderDate = orderData.date
       
       const expectedDate  = new Date(orderDate.getTime() + (5 * 24 * 60 * 60 * 1000));
@@ -167,11 +168,64 @@ const placeOrder = async (req, res,next) => {
     }
   };
 
+  const returnOrder = async (req, res, next) => {
+    try {
+      const id = req.body.order;
+      const ordId = req.body.orders;
+      const session = req.session.user_id;
+      const orderData = await Order.findOne({
+        userId: session,
+        "products._id": id,
+      });
+      const product = orderData.products.find((p) => p._id.toString() === id);
+      const returnAmount = product.totalPrice;
+      const procount = product.count;
+      const proId = product.productId;
+      const updatedOrder = await Order.findOneAndUpdate(
+        {
+          userId: session,
+          "products._id": id,
+        },
+        {
+          $set: {
+            "products.$.status": "return",
+          },
+        },
+        {
+          new: true,
+        }
+      );
+      if (updatedOrder) {
+        await Product.findByIdAndUpdate(
+          { _id: proId },
+          { $inc: { StockQuantity: procount } }
+        );
+        if (
+          orderData.paymentMethod === "onlinPayment" ||
+          orderData.paymentMethod === "COD"
+        ) {
+          await User.findByIdAndUpdate(
+            { _id: session },
+            { $inc: { wallet: returnAmount } }
+          );
+          //await Order.findByIdAndUpdate(session, { $inc: { totalAmount: -returnAmount } });
+          res.redirect("/singleOrder/" + ordId);
+        } else {
+          res.redirect("/singleOrder/" + ordId);
+        }
+      } else {
+        res.redirect("/singleOrder/" + ordId);
+      }
+    } catch (err) {
+      next(err);
+    }
+  };
+
  module.exports ={
     placeOrder,
     verifyPayment,
     loadOrder,
     loadSingleOrder,
     orderCancel,
-
- }
+    returnOrder
+}

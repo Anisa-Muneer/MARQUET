@@ -10,6 +10,19 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Sales Report</h4>
+        <div class="d-flex justify-content-end">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Sorting
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="/admin/salesReportSort/<%= 1 %>">Daily</a>
+              <a class="dropdown-item" href="/admin/salesReportSort/<%= 7 %>">Weekly</a>
+              <a class="dropdown-item" href="/admin/salesReportSort/<%= 30 %>">Monthly</a>
+              <a class="dropdown-item" href="/admin/salesReport">All Reports</a>
+            </div>
+          </div>
+        </div>
   
         <div class="table-responsive">
           <table class="table table-hover" id="sales" >

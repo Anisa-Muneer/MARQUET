@@ -7,6 +7,7 @@ dotenv.config();
 
 const session=require('express-session')
 
+//=============ABIS BIN AZAD=================//
 //admin_route.use(session({secret:config.sessionSecret}))
 admin_route.use(session({
     secret: process.env.secret, // Secret key used to sign the session ID cookie
@@ -24,13 +25,14 @@ const categoryController  = require('../controllers/categoryController');
 const productController = require('../controllers/productController')
 const adminOrderController = require('../controllers/adminorderController')
 const bannerController = require('../controllers/bannerController')
-const coupenController = require('../controllers/coupenController')
+const couponController = require('../controllers/couponController')
 
 admin_route.get('/',auth.isLogout,adminController.loadLogin)
 admin_route.post('/',adminController.verifyLogin)
 
 admin_route.get('/dashboard',auth.isLogin,adminController.loadDashboard)
 admin_route.get("/salesReport", auth.isLogin, adminController.loadSalesReport);
+admin_route.get('/salesReportSort/:id', auth.isLogin, adminController.sortReport)
 
 
 admin_route.get('/logout',auth.isLogin,adminController.logout)
@@ -67,9 +69,10 @@ admin_route.get('/deleteBanner',auth.isLogin,bannerController.deleteBanner)
 admin_route.get('/editBanner/:id',auth.isLogin,bannerController.editBanner);
 admin_route.post('/editBanner/:id',upload.upload.array("image", 1), bannerController.updateBanner);
 
-admin_route.get('/coupenList',auth.isLogin,coupenController.loadCoupen)
-admin_route.post('/insertCoupen',coupenController.insertCoupen)
-
+admin_route.get('/CouponList',auth.isLogin,couponController.loadCoupon)
+admin_route.post('/insertCoupon',couponController.insertCoupon)
+admin_route.post('/updateCoupon/:id',couponController.updateCoupen)
+admin_route.get('/deleteCoupon',auth.isLogin,couponController.deleteCoupon)
 
 
 

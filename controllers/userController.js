@@ -51,7 +51,7 @@ const sendverifyMail=async(name,email,otp)=>{
       console.log(error);
     } else {
       console.log("Email has been send",info.response);
-      console.log(otp);
+      console.log(otp,"uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
     }
   })
 
@@ -90,7 +90,7 @@ const sendResetPasswordMail=async(name,email,token)=>{
       console.log(error);
     } else {
       console.log("Email has been send",info.response);
-      console.log(otp);
+      console.log(otp,"3333333333333333333333333333333333333333333333333333333333333333");
     }
   })
 
@@ -175,7 +175,7 @@ const insertUser=async(req,res,next)=>{
 
 const reSendMail = async(req,res,next)=>{
   try {
-    console.log(name + email + otp);
+    console.log(name + email + otp,"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
     sendverifyMail(name,email,otp)
   } catch (error) {
     next(error)
@@ -266,7 +266,7 @@ const verifyLoad = async (req,res,next)=>{
 
   try { 
       if(otp2==otp){
-        console.log(otp);
+       
           const userData = await User.findOneAndUpdate({email:email},{$set:{is_verified:1}});
           // const userData = await User.findOne({ email: email });
           
@@ -328,8 +328,7 @@ const loadProducts = async (req,res,next)=>{
     try {
        var search = '';
       if(req.query.search){
-      
-        search = req.query.search;
+       search = req.query.search;
       }
 
       var page = 1;
@@ -360,13 +359,7 @@ const loadProducts = async (req,res,next)=>{
           ]
         })
         .countDocuments();
-
-      
-
-      
         const categoryData = await Category.find({is_delete:false});
-        
-        
         if (!session) {
           return res.render("shop",{session:session,category:categoryData,products:productData,   
             totalPages:Math.ceil(count/limit),currentPage:page});
@@ -421,10 +414,11 @@ const loadProducts = async (req,res,next)=>{
       next(error)
     }
   }
+
   const sendResetPassword=async(name,email,otp3)=>{
     try {
+
       otp_to_verify=otp3
-      console.log( otp_to_verify+'otp veriy is');
       const transporter=nodemailer.createTransport({
         host:'smtp.gmail.com',
         port:587,
@@ -432,7 +426,7 @@ const loadProducts = async (req,res,next)=>{
         requireTLS:true,
         auth:{
           user:process.env.useremail,
-        pass: 'process.env.password'
+          pass:process.env.password
         }
       });
       const mailOption={
@@ -447,10 +441,9 @@ const loadProducts = async (req,res,next)=>{
         console.log(error);
       } else {
         console.log("Email has been send",info.response);
-        console.log(otp);
+      
       }
     })
-  
   }
   catch (error) {
       console.log(error.message);
@@ -461,8 +454,8 @@ const loadProducts = async (req,res,next)=>{
   const forgetVerify = async (req, res,next) => {
     try {
       const email = req.body.email;
-      emalreset=email
-      console.log("1"+emalreset);
+      // emalreset=email
+      
       
       const userData = await User.findOne({ email: email });
       if (userData) {
@@ -473,7 +466,9 @@ const loadProducts = async (req,res,next)=>{
         } else {
           randomnumber = Math.floor(Math.random() * 9000) + 1000;
           otp3 = randomnumber;
+          
           sendResetPassword(userData.name,userData.email,otp3)
+          console.log(otp3,"ppppppp554564646543213454651131ppppppppppppppppppppppppppppppppppppppp");
           res.render('forget',{message:'please check mail and enter OTP'})
         }
       }else{
@@ -484,13 +479,14 @@ const loadProducts = async (req,res,next)=>{
     }
   };
   
-  const verifyForgetOtp = async (req, res,next) => {
+  const verifyForgetOtps = async (req, res,next) => {
     try {
-      const otp4=req.body.otp4
-      console.log(otp4 + 'this is otp from user entered');
+     
+      const otp4 = req.body.otp4
+
     
-      if(otp4== otp_to_verify){
-        
+      if(otp4 == otp_to_verify){
+
        res.render('changePassword')
       }else{
         res.render('forget',{message:"something went wrong"})
@@ -500,7 +496,7 @@ const loadProducts = async (req,res,next)=>{
     }
   };
   
-  const loadchangePasswod = async(req,res,next)=>{
+  const loadchangePassword = async(req,res,next)=>{
     try {
       res.render('changePassword',{message:'password is not matching'})
     } catch (error) {
@@ -511,8 +507,6 @@ const loadProducts = async (req,res,next)=>{
   
   const changePassword=async(req,res,next)=>{
     try {
-      console.log(emalreset);
-      
       const password=req.body.password;
       const confPassword=req.body.confPassword;
       const passwordHash=await bcrypt.hash(password,10)
@@ -551,8 +545,14 @@ const filterCategory = async (req,res,next)=>{
     if(req.query.search){
       search = req.query.search;
     }
+    
+    var page = 1;
+    if(req.query.page){
+      
+      page = req.query.page;
+    }
     const id = req.params.id;
-    const limit = 6;
+    const limit = 3;
     const count = await Product.find({is_delete:false,
       $or:[
         {product:{$regex:'.*'+search+'.*',$options:'i'}},
@@ -564,7 +564,16 @@ const filterCategory = async (req,res,next)=>{
     const session = req.session.user_id;
     const categoryData = await Category.find({is_delete:false});
     const userData = await User.find({})
-    const productData = await Product.find({Category:id,is_delete:false})
+    const productData = await Product.find({Category:id,is_delete:false,
+      $or:[
+        {product:{$regex:'.*'+search+'.*',$options:'i'}},
+        {price:{$regex:'.*'+search+'.*'}},
+        {description:{$regex:'.*'+search+'.*',$options:'i'}},
+      ]
+    })
+    .limit(limit * 1)
+        .skip((page-1) * limit ) 
+        .exec()
     
     if(categoryData.length > 0){
       res.render('shop',{totalPages:Math.ceil(count/limit),products:productData,session,category:categoryData,userData});
@@ -588,7 +597,11 @@ const priceSort = async(req,res,next) =>{
     if(req.query.search){
       search = req.query.search;
     }
-    
+    var page = 1;
+    if(req.query.page){
+      
+      page = req.query.page;
+    }
     const limit = 6;
     const count = await Product.find({is_delete:false,
       $or:[
@@ -603,7 +616,17 @@ const priceSort = async(req,res,next) =>{
     const userData = await User.find()
     const categoryData = await Category.find({ is_delete: false });
     const session = req.session.user_id;
-    const sortData = await Product.find({is_delete:false}).sort({Price:id})
+    const sortData = await Product.find({is_delete:false,
+      $or:[
+        {product:{$regex:'.*'+search+'.*',$options:'i'}},
+        {price:{$regex:'.*'+search+'.*'}},
+        {description:{$regex:'.*'+search+'.*',$options:'i'}},
+      ]
+    })
+
+    .sort({Price:id}).limit(limit * 1)
+        .skip((page-1) * limit ) 
+        .exec()
    
     if(sortData){
       res.render("shop", {
@@ -642,9 +665,9 @@ module.exports={
     loadVerfication,
     forgetLoad,
     forgetVerify,
-    loadchangePasswod,
+    loadchangePassword,
     changePassword,
-    verifyForgetOtp,
+    verifyForgetOtps,
     loadProfile,
     reSendMail,
     filterCategory,

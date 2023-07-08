@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const coupenSchema = mongoose.Schema({
+const CouponSchema = mongoose.Schema({
     code:{
         type:String,
         required:true
@@ -28,4 +28,4 @@ const coupenSchema = mongoose.Schema({
         required:true
     }
 })
-module.exports = mongoose.model('coupen',coupenSchema)
+module.exports = mongoose.model('Coupon',CouponSchema)

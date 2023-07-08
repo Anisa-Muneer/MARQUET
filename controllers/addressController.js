@@ -23,8 +23,8 @@ const insertAddress = async (req, res, next) => {
     const addressDetails = await Address.findOne({
       userId: req.session.user_id,
     });
+
     if (addressDetails) {
-      
       const updateOne = await Address.updateOne(
         { userId: req.session.user_id },
         {

@@ -18,11 +18,6 @@ const AddProducts = async (req,res,next)=>{
     }
  }
 
-
-
-
-
-
 // Adding the Products 
 const insertproduct = async (req,res,next)=>{
     try {
@@ -53,19 +48,14 @@ const insertproduct = async (req,res,next)=>{
 // Listing the Product 
 const productList = async (req,res,next)=>{
     try {
-        
         const adminData = await User.findById({ _id: req.session.auser_id });
-
-            const productData = await Product.find({is_delete:false});
+        const productData = await Product.find({is_delete:false});
             res.render('productList',{products:productData,admin:adminData})
         
     } catch (error) {
         next(error)
     }
 }
-
-
- 
 
 // Deleting the Product
  const deleteProduct =async(req,res)=>{
@@ -84,9 +74,6 @@ const productList = async (req,res,next)=>{
     }
 }
 
- 
-
-
 //  ------------- Edit product  section
 const editproduct = async(req,res) => {
     try {
@@ -100,14 +87,11 @@ const editproduct = async(req,res) => {
     }
 }
 
-
-
 //  ------------- Update product  section
 const updateProduct = async (req,res) =>{
   if(req.body.product.trim() === "" || req.body.category.trim() === "" || req.body.description.trim() === "" || req.body.stock.trim() === "" || req.body.price.trim() === "") {
       const id = req.params.id
       const productData = await Product.findOne({_id:id}).populate('Category')
-      
       const categoryData = Category.find()
       const adminData = await User.findById({_id:req.session.auser_id})
       res.render('editProductList',{admin:adminData,product: productData, message:"All fields required",category:categoryData})

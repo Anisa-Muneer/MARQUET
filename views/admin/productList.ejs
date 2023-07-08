@@ -37,6 +37,7 @@
                   <td>
                     <a class="btn btn-success" href="/admin/editProductList/<%= products[i]._id %>">Edit</a>
                     <a class="btn btn-danger" href="deleteProduct?id=<%= products[i]._id %>" onclick="return confirm('Are you sure you want to delete <%= products[i].product %>?')">Delete</a>
+                    
                   </td>
                 </tr>
               <% } %>
