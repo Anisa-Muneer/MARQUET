@@ -6,8 +6,9 @@ const Coupon = require('../models/couponModel')
 const loadCoupon =async(req,res)=>{
     try {
         const adminData = await User.findById({_id:req.session.auser_id})
-        const CouponData = await Coupon.find()
-        res.render('couponList',{admin:adminData,Coupon:CouponData})
+        const couponData = await Coupon.find({})
+        console.log(couponData);
+        res.render('couponList',{admin:adminData,Coupon:couponData})
     } catch (error) {
         console.log(error.message);
     }
@@ -17,7 +18,7 @@ const insertCoupon = async(req,res)=>{
     try {
         console.log("Helooooo");
         const adminData = await User.findById({ _id: req.session.auser_id });
-        const CouponData = await Coupon.find()
+        const CouponData = await Coupon.find({})
 
         //exist code in coupon checking
 

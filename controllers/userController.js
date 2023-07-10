@@ -273,7 +273,7 @@ const verifyLoad = async (req,res,next)=>{
           if(userData){
           // res.redirect('/')
           req.session.user_id = userData._id;
-          res.render('home',{session,userData})
+          res.redirect('/')
           }
           else{
             
