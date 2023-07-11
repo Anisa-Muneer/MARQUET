@@ -3,18 +3,18 @@ const Product = require('../models/productModel')
 const Coupon = require('../models/couponModel')
 
 //Load coupon page
-const loadCoupon =async(req,res)=>{
+const loadCoupon =async(req,res,next)=>{
     try {
         const adminData = await User.findById({_id:req.session.auser_id})
         const couponData = await Coupon.find({})
         console.log(couponData);
         res.render('couponList',{admin:adminData,Coupon:couponData})
     } catch (error) {
-        console.log(error.message);
+        next(error)
     }
 }
 //insert Coupon
-const insertCoupon = async(req,res)=>{
+const insertCoupon = async(req,res,next)=>{
     try {
         console.log("Helooooo");
         const adminData = await User.findById({ _id: req.session.auser_id });
@@ -60,7 +60,7 @@ const insertCoupon = async(req,res)=>{
             res.redirect('/admin/couponList')
         } 
     } catch (error) {
-        console.log(error.message);
+        error(next)
     }
 } 
 
@@ -107,12 +107,12 @@ const updateCoupen = async(req,res,next)=>{
             res.redirect('/admin/couponList')
         }
     } catch (error) {
-        console.log(error.message);
+        next(error)
     }
 }
 
 // Deleting the Coupon
-const deleteCoupon = async(req,res)=>{
+const deleteCoupon = async(req,res,next)=>{
     try {
         const dlt = await Coupon.deleteOne({_id:req.query.id})
         if(dlt){
@@ -121,7 +121,7 @@ const deleteCoupon = async(req,res)=>{
             res.redirect('/admin/couponList')
         }
     } catch (error) {
-        console.log(error.message);
+        next(error)
     }
 }
 
@@ -148,7 +148,7 @@ const applyCoupon = async(req,res,next)=>{
       }
       res.json({invalid:true})
     } catch (error) {
-        console.log(error.message);
+        next(error)
     }
 }
 

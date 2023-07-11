@@ -55,23 +55,24 @@ user_route.get('/reSend',userController.reSendMail)
 user_route.get('/profile',auth.isLogin,userController.loadProfile);
 
 
-
+//cart controller
 user_route.get('/cart',auth.isLogin,auth.isBlock,cartController.loadCart)
 user_route.post('/addToCart',auth.isLogin,auth.isBlock,cartController.addToCart)
 user_route.post("/deleteCart",auth.isBlock , auth.isLogin, cartController.deletecart);
+user_route.post('/changeQuantity',cartController.changeProductCount)
 
+//wishlist controller
 user_route.get('/wishlist',auth.isLogin,wishlistController.wishlistLoad);
 user_route.post('/addToWishlist',auth.isLogin,wishlistController.addToWishlist);
-
-
 user_route.post('/deleteWishlist',auth.isBlock,auth.isLogin,wishlistController.deleteWishlist)
+
+
 user_route.get('/filterCategory/:id',userController.filterCategory)
-user_route.post('/changeQuantity',cartController.changeProductCount)
 user_route.get('/price-sort/:id',userController.priceSort)
 
 
 
-
+//address controller
 user_route.get("/addAddress", auth.isLogin, cartController.loadAddAddress);
 user_route.post("/addAddress", addressController.insertAddress);
 user_route.post("/deleteAddress",auth.isBlock , auth.isLogin, addressController.deleteAddress);
@@ -79,18 +80,19 @@ user_route.get('/editAddress/:id',auth.isLogin,addressController.loadEditAddress
 user_route.post('/editAddress/:id',auth.isLogin,addressController.editAddress)
 
 
+
+//order controller
 user_route.get('/checkout',cartController.loadCheckout)
 user_route.post('/checkout',orderController.placeOrder)
 user_route.post('/verify-payment',orderController.verifyPayment)
-
 user_route.get('/myOrders',auth.isLogin,orderController.loadOrder)
 user_route.get('/singleOrder/:id',orderController.loadSingleOrder)
 user_route.post('/cancelOrder',auth.isLogin,orderController.orderCancel)
 user_route.post('/returnOrder', orderController.returnOrder);
+user_route.get('/invoiceDownload/:id',orderController.loadinvoice);
 
 
-user_route.get('/invoiceDownload/:id',addressController.loadinvoice);
-
-user_route.post('/apply-coupon',couponController.applyCoupon)
+//coupen controller
+user_route.post('/applyCoupon',couponController.applyCoupon)
 
 module.exports= user_route

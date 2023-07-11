@@ -7,7 +7,7 @@ dotenv.config();
 
 const session=require('express-session')
 
-//=============ABIS BIN AZAD=================//
+
 //admin_route.use(session({secret:config.sessionSecret}))
 admin_route.use(session({
     secret: process.env.secret, // Secret key used to sign the session ID cookie
@@ -64,10 +64,11 @@ admin_route.post('/changeStatus',adminOrderController.changeStatus);
 
 admin_route.get('/banner',auth.isLogin,bannerController.bannerList)
 admin_route.get('/addBanner',auth.isLogin,bannerController.addBanner)
-admin_route.post('/addBanner',upload.upload.array('image',1),bannerController.insertBanner);
+admin_route.post('/addBanner',upload.upload.single('image'),bannerController.insertBanner);
 admin_route.get('/deleteBanner',auth.isLogin,bannerController.deleteBanner)
 admin_route.get('/editBanner/:id',auth.isLogin,bannerController.editBanner);
-admin_route.post('/editBanner/:id',upload.upload.array("image", 1), bannerController.updateBanner);
+admin_route.post('/editBanner/:id',upload.upload.single("image"), bannerController.updateBanner);
+// admin_route.get('/deleteimgBan/:imgid/banid',auth.isLogin,bannerController.deleteimageBan)
 
 admin_route.get('/CouponList',auth.isLogin,couponController.loadCoupon)
 admin_route.post('/insertCoupon',couponController.insertCoupon)

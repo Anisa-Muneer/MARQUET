@@ -7,7 +7,7 @@ const Coupon = require('../models/couponModel')
 
 
 // ---------- Cart loading section start
-const loadCart = async(req,res)=>{
+const loadCart = async(req,res,next)=>{
     try {
       let id = req.session.user_id;
       const userData = await User.findById({_id:req.session.user_id});
@@ -44,14 +44,14 @@ const loadCart = async(req,res)=>{
        res.redirect("/login");
      }
    } catch (error) {
-     console.log(error.message);
+     next(error)
    }
  }
    
 
 
 // ---------- Add to cart section start
-const addToCart = async (req,res)=>{
+const addToCart = async (req,res,next)=>{
     try{
       const userId = req.session.user_id;
      
@@ -118,14 +118,14 @@ const addToCart = async (req,res)=>{
         }
         res.json({success:true})
       }catch(error){
-        console.log(error.message);
+        next(error)
         res.status(500).json({ success: false, message: "Server Error" });
       }
     }
 
     
 
-    const changeProductCount = async (req, res) => {
+    const changeProductCount = async (req, res,next) => {
       try {
         const userData = req.session.user_id;
         const proId = req.body.product;
@@ -187,7 +187,7 @@ const addToCart = async (req,res)=>{
     
         res.json({ success: true });
       } catch (error) {
-        console.log(error.message);
+      next(error)
         res.status(500).json({ success: false, error: error.message });
       }
     };
@@ -221,7 +221,6 @@ const addToCart = async (req,res)=>{
         const Total = total.length > 0 ? total[0].total : 0;
         const totalAmount = Total ;
         const products = cartData.products;
-       console.log(products + "its my product");
         if (req.session.user_id) {
           if (addressData) {
        

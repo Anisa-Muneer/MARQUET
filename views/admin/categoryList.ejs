@@ -37,11 +37,12 @@
                                 </div>
                                 <div class="modal-body">
                     
-                                    <form class="forms-sample" method="post" action="/admin/insertCategory">
+                                    <form class="forms-sample" method="post" action="/admin/insertCategory" id="addform">
                                         <div class="form-group">
                                             <label for="exampleInputName1">CATEGORY NAME</label>
-                                            <input type="text" class="form-control" id="exampleInputName1" placeholder="Name"
+                                            <input type="text" class="form-control" id="categoryName" placeholder="Name"
                                                 name="categoryName">
+                                                <span class="text-danger " id="catError"></span>
                                         </div>
                     
                                         <a href="/admin/categoryList"> <button type="submit" class="btn btn-primary mr-2">Submit</button>
@@ -104,16 +105,28 @@
                             </table>
                         </div>
                     </div>
-
-                                
-
-
-
-
-      </div>
+                </div>
     </div>
   </div>    
 
+
+  <script>
+                 const form = document.getElementById("addform") 
+                  const categoryName = document.getElementById("categoryName") 
+                  const catError = document.getElementById("catError")
+
+                  form.addEventListener("submit", (event) => {
+                  event.preventDefault();
+                  const catValue = categoryName.value.trim()
+                  if(!catValue){
+                    catError.textContent = "Category Name Can't Be Blank";
+                    return
+                  }else{
+                    catError.textContent = "";
+                  }
+                  form.submit();
+                })
+  </script>
 
 
   

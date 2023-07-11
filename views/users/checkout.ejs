@@ -362,7 +362,7 @@ var rzp1 = new Razorpay(options);
       event.preventDefault();
     const amount = document.getElementById('total').innerHTML;
     $.ajax({
-      url:"/apply-coupon",
+      url:"/applyCoupon",
       data:{  
         code:code,
         amount:amount

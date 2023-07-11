@@ -58,7 +58,7 @@
           <% if (banners.image && banners.image.length > 0) { %>
             <% banners.image.forEach((x, index) => { %>
               <img class="mb-3" src="/adminAssets/adminImages/<%= x %>" alt="banners image" width="60px" height="50">
-              <a href="/admin/delete-image/<%= x %>/<%= banners._id %>">
+              <a href="/admin/deleteimgBan/<%= x %>/<%= banners._id %>">
                 <button type="button" class="btn btn-danger mb-4" data-bs-dismiss="modal">Delete</button>
               </a>
               <br>

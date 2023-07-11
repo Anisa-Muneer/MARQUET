@@ -6,12 +6,18 @@ const Category = require('../models/categoryModel')
 const razorpay = require('razorpay');
 const env = require('dotenv')
 env.config();
+const puppeteer = require('puppeteer');
+const fs = require('fs');
+const path = require('path')
+const ejs = require('ejs')
+
 
 var instance = new razorpay({
   key_id: process.env.Razorpay_Key_Id,
   key_secret: process.env.Razorpay_Key_Secret,
 });
 
+// ============ PLACE ORDER =================
 const placeOrder = async (req, res,next) => {
     try {
       const userData = await User.findOne({ _id: req.session.user_id });
@@ -137,7 +143,9 @@ const placeOrder = async (req, res,next) => {
       const userData = await Order.findById(req.session.user_id)
       const orderData = await Order.findOne({ userId: req.session.user_id, 'products._id': id})
       const product = orderData.products.find((p) => p._id.toString() === id);
-      const cancelledAmount = product.totalPrice     
+      const cancelledAmount = product.totalPrice;
+      const procount = product.count;
+      const proId = product.productId;    
       const updatedOrder = await Order.findOneAndUpdate(
         {
           userId: req.session.user_id,
@@ -153,12 +161,25 @@ const placeOrder = async (req, res,next) => {
 
   
       if (updatedOrder) {
+        await Product.findByIdAndUpdate(
+          { _id: proId },
+          { $inc: { stock: procount } }
+        );
+        if (orderData.paymentMethod === "onlinPayment") {
+          await User.findByIdAndUpdate(
+            { _id: req.session.user_id },
+            { $inc: { wallet: cancelledAmount } }
+          );
+          res.json({ success: true });
+        } else {
+          res.json({ success: true });
+        }
         
         // if(orderData.paymentMethod === 'online-payment'){
         //    await User.findByIdAndUpdate({_id:req.session.user_id},{$inc:{wallet:cancelledAmount}})
         //    res.json({ success: true });
         // }else{
-           res.json({ success: true });
+          //  res.json({ success: true });
         // }
       } else {
         res.json({ success: false });
@@ -198,7 +219,7 @@ const placeOrder = async (req, res,next) => {
       if (updatedOrder) {
         await Product.findByIdAndUpdate(
           { _id: proId },
-          { $inc: { StockQuantity: procount } }
+          { $inc: { stock: procount } }
         );
         if (
           orderData.paymentMethod === "onlinPayment" ||
@@ -221,11 +242,50 @@ const placeOrder = async (req, res,next) => {
     }
   };
 
+
+  //---------------- USER ORDER INVOICE DOWNLODE SECTION SECTION START
+const loadinvoice = async (req, res,next) => {
+  try {
+    const id = req.params.id;
+    const session = req.session.user_id;
+    const userData = await User.findById({_id:session})
+    const orderData = await Order.findOne({_id:id}).populate('products.productId');
+    const date = new Date()
+   
+     data = {
+      order:orderData,
+      user:userData,
+      date,
+    }
+
+    const filepathName = path.resolve(__dirname, '../views/users/invoice.ejs');
+    const html = fs.readFileSync(filepathName).toString();
+    const ejsData = ejs.render(html, data);
+    
+    const browser = await puppeteer.launch({ headless: 'new' });
+    const page = await browser.newPage();
+    await page.setContent(ejsData, { waitUntil: 'networkidle0' });
+    const pdfBytes = await page.pdf({ format: 'Letter' });
+    await browser.close();
+
+   
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename= order invoice.pdf');
+    res.send(pdfBytes);
+
+  } catch (error) {
+    next(error)
+    res.status(500).send('An error occurred');
+  }
+};
+
+
  module.exports ={
     placeOrder,
     verifyPayment,
     loadOrder,
     loadSingleOrder,
     orderCancel,
-    returnOrder
+    returnOrder,
+    loadinvoice
 }

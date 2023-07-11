@@ -15,16 +15,16 @@ const securePassword = async (password) => {
     }
   };
 
-const loadLogin= async(req,res)=>{
+const loadLogin= async(req,res,next)=>{
     try{
         res.render('login',{message})
         message=null
-    }catch(err){
-        console.log(err.message);
+    }catch(error){
+        next(error)
     }
 }
 
-const verifyLogin= async(req,res)=>{
+const verifyLogin= async(req,res,next)=>{
     try{
         const email=req.body.email
         const password=req.body.password
@@ -51,23 +51,23 @@ const verifyLogin= async(req,res)=>{
         }
 
 
-    }catch(err){
-        console.log(err.message);
+    }catch(error){
+        next(error)
     }
 }
 
-const logout=async(req,res)=>{
+const logout=async(req,res,next)=>{
     try{
 
         req.session.destroy()
         res.redirect('/admin')
 
-    }catch(err){
-        console.log(err.message);
+    }catch(error){
+        next(error)
     }
 }
 
-const loadDashboard = async (req, res) => {
+const loadDashboard = async (req, res,next) => {
     try {
       const adminData = await User.findById({ _id: req.session.auser_id });
       const users = await User.find({is_block:false})
@@ -144,11 +144,7 @@ const loadDashboard = async (req, res) => {
       } else {
         console.log('No online orders found.');
       }
-
-
-     
-
-
+      
       const weeklySalesCursor = Order.aggregate([
         {
           $unwind: "$products"
@@ -219,14 +215,14 @@ const loadDashboard = async (req, res) => {
         dates
       });
     } catch (error) {
-      console.log(error.message);
+      next(error)
     }
   };
 
 
   //loading sales report page 
 
-const loadSalesReport = async(req,res) =>{
+const loadSalesReport = async(req,res,next) =>{
   try {
     const adminData = await User.findById({ _id: req.session.auser_id });
    const order = await Order.aggregate([
@@ -251,13 +247,13 @@ const loadSalesReport = async(req,res) =>{
 ]);
     res.render("salesReport", { order ,admin:adminData });
   } catch (error) {
-    console.log(error.message);
+    next(error)
   }
 }
 
 //sort sales report
 
-const sortReport = async (req, res) => {
+const sortReport = async (req, res,next) => {
   try {
     const adminData = await User.findById(req.session.auser_id);
     const id = parseInt(req.params.id);
@@ -297,19 +293,19 @@ const sortReport = async (req, res) => {
     console.log(order);
     res.render("salesReport", { order, admin: adminData });
   } catch (error) {
-    console.log(error.message);
+    next(error)
   }
 }
 
 
 
-  const newUserLoad= async(req,res)=>{
+  const newUserLoad= async(req,res,next)=>{
     try{
       const userData = await User.find({is_admin:0})
       const adminData = await User.findById({ _id: req.session.auser_id });
         res.render('userList',{users:userData,admin:adminData})
-    }catch(err){
-        console.log(err.message);
+    }catch(error){
+        next(error)
     }
   }
     
@@ -334,12 +330,12 @@ const sortReport = async (req, res) => {
         res.render('userList',{message:"Your registration has been failed"})
     }
 
-    }catch(err){
-        console.log(err);
+    }catch(error){
+        next(error)
     }
   }
 
-  const block=async (req,res)=>{
+  const block=async (req,res,next)=>{
     try{
   
       const userData = await User.findByIdAndUpdate(req.query.id,{$set:{is_block:true}})
@@ -347,18 +343,18 @@ const sortReport = async (req, res) => {
       res.redirect('/admin/userList')
 
     }catch(error){
-      console.log(error.message);
+      next(error)
     }
   }
 
-  const unblock=async (req,res)=>{
+  const unblock=async (req,res,next)=>{
     try{
       const userData = await User.findByIdAndUpdate(req.query.id,{$set:{is_block:false}})
       
       res.redirect('/admin/userList')
 
     }catch(error){
-      console.log(error.message);
+      next(error)
     }
   }
 

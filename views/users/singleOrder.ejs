@@ -67,30 +67,30 @@
                     </thead>
                     <tbody>
                         <% if (orders.products.length > 0) {
-                        orders.products.forEach((orders) => { %>
+                        orders.products.forEach((order) => { %>
                         <tr>
                             <td>
-                                <img width="50px" height="50px" src="/adminAsset/adminImages/<%=orders.productId.image[0]%>" alt="">
-                                <%= orders.productId.productName %>
+                                <img width="50px" height="50px" src="/adminAsset/adminImages/<%=order.productId.image[0]%>" alt="">
+                                <%= order.productId.productName %>
                             </td>
-                            <td><%= orders.count %></td>
-                            <td><%= orders.productId._id %></td>
-                            <td><%= orders.productPrice %></td>
-                            <td><%= orders.status %></td>
+                            <td><%= order.count %></td>
+                            <td><%= order.productId._id %></td>
+                            <td><%= order.productPrice %></td>
+                            <td><%= order.status %></td>
                             <td>
-                                <% if (orders.status === 'cancelled') { %>
+                                <% if (order.status === 'cancelled') { %>
                                     <h3>cancelled</h3>
-                                <% } else if (orders.status === 'Delivered') { %>
+                                <% } else if (order.status === 'Delivered') { %>
                                 <% if ((new Date() - orders.date) / (1000 * 60 * 60 * 24) <=10) { %>
-                                    <button onclick="returnOrder('<%= orders._id %>','<%= orders._id %>')" class="btn btn-outline-dark">Return</button>
+                                    <button onclick="returnOrder('<%= order._id %>','<%= orders._id %>')" class="btn btn-outline-dark">Return</button>
                                 <% } else { %>
                                     <button class="btn-outline-dark">Return</button>
                                 <% } %>
-                                <% } else if (orders.status==='return' ) { %>
+                                <% } else if (order.status==='return' ) { %>
                                      <button class="btn btn-outline-dark disabled">Returned</button>
                                
                                 <% } else { %>
-                                    <button onclick="cancelOrder('<%= orders._id %>')" class="le-btn small">Cancel</button>
+                                    <button onclick="cancelOrder('<%= order._id %>')" class="le-btn small">Cancel</button>
                                 <% } %>
                             </td>
                         </tr>

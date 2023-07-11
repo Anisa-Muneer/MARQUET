@@ -3,10 +3,6 @@ const Address = require("../models/addressModel");
 const Category = require("../models/categoryModel");
 const Product = require('../models/productModel')
 const Order = require('../models/orderModel')
-const puppeteer = require('puppeteer');
-const fs = require('fs');
-const path = require('path')
-const ejs = require('ejs')
 
 
 
@@ -72,7 +68,7 @@ const insertAddress = async (req, res, next) => {
           },
         ],
       });
-      console.log(address);
+      
       const addressData = await address.save();
 
       if (addressData) {
@@ -80,7 +76,7 @@ const insertAddress = async (req, res, next) => {
         console.log(addresses);
         return res.redirect("/checkout");
       } else {
-        console.log("here222");
+    
 
         const addresses = await Address.find(); // Renamed 'address' to 'addresses'
         console.log(addresses);
@@ -117,8 +113,7 @@ const deleteAddress = async (req,res) => {
 }
 
 
-const editAddress = async (req, res) => {
-  console.log('yes edit address');
+const editAddress = async (req, res,next) => {
 
   if (
     req.body.userName.trim() === "" ||
@@ -130,7 +125,7 @@ const editAddress = async (req, res) => {
     req.body.state.trim() === "" ||
     req.body.pincode.trim() === ""
   ) {
-    console.log('yes iam inn');
+   
     const id = req.params.id;
     const session = req.session.user_id;
     const userData = await User.findOne({ _id: req.session.user_id });
@@ -147,7 +142,7 @@ const editAddress = async (req, res) => {
       categoryData
     });
   } else {
-    console.log('i am else');
+    
     try {
       const id = req.params.id;
       await Address.updateOne(
@@ -169,13 +164,13 @@ const editAddress = async (req, res) => {
       );
       res.redirect("/checkout");
     } catch (error) {
-      console.log(error.message);
+      next(error)
     }
   }
 };
 
 
-const loadEditAddress = async (req, res) => {
+const loadEditAddress = async (req, res,next) => {
   try {
     const id = req.params.id;
     console.log(id);
@@ -194,45 +189,10 @@ const loadEditAddress = async (req, res) => {
       categoryData
     });
   } catch (error) {
-    console.log(error.message);
+   next(error)
   }
 };
 
-//---------------- USER ORDER INVOICE DOWNLODE SECTION SECTION START
-const loadinvoice = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const session = req.session.user_id;
-    const userData = await User.findById({_id:session})
-    const orderData = await Order.findOne({_id:id}).populate('products.productId');
-    const date = new Date()
-   
-     data = {
-      order:orderData,
-      user:userData,
-      date,
-    }
-
-    const filepathName = path.resolve(__dirname, '../views/users/invoice.ejs');
-    const html = fs.readFileSync(filepathName).toString();
-    const ejsData = ejs.render(html, data);
-    
-    const browser = await puppeteer.launch({ headless: 'new' });
-    const page = await browser.newPage();
-    await page.setContent(ejsData, { waitUntil: 'networkidle0' });
-    const pdfBytes = await page.pdf({ format: 'Letter' });
-    await browser.close();
-
-   
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'attachment; filename= order invoice.pdf');
-    res.send(pdfBytes);
-
-  } catch (err) {
-    console.log(err);
-    res.status(500).send('An error occurred');
-  }
-};
 
 
 
@@ -241,5 +201,5 @@ module.exports = {
   deleteAddress,
   editAddress,
   loadEditAddress,
-  loadinvoice
+ 
 };

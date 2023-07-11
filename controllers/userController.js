@@ -9,7 +9,15 @@ const userModel = require('../models/userModel')
 const { name } = require('ejs')
 const Address = require("../models/addressModel");
 const Banner = require('../models/bannerModel')
-
+const passwordValidator = require('password-validator')
+var schema = new passwordValidator();
+schema
+.is().min(8)                                    // Minimum length 8
+.is().max(100)                                  // Maximum length 100
+.has().uppercase()                              // Must have uppercase letters
+.has().lowercase()                              // Must have lowercase letters
+.has().digits(2)                                // Must have at least 2 digits
+.has().not().spaces()                           // Should not have spaces
 
 
 let otp
@@ -126,6 +134,9 @@ let name1
 let email;
 const insertUser=async(req,res,next)=>{
     try{
+      if(!schema.validate(req.body.password)){
+        return res.render("registration",{message: "Create a strong password"})
+      }
       const spassword=await securePassword(req.body.password)
       const user =new User({
         name:req.body.name,

@@ -58,7 +58,7 @@ const productList = async (req,res,next)=>{
 }
 
 // Deleting the Product
- const deleteProduct =async(req,res)=>{
+ const deleteProduct =async(req,res,next)=>{
     try {
         const dlt = await Product.updateOne({_id:req.query.id },{$set:{is_delete:true}})
         if(dlt){
@@ -70,12 +70,12 @@ const productList = async (req,res,next)=>{
         }
         
     } catch (error) {
-        console.log(error.message);
+        next(error)
     }
 }
 
 //  ------------- Edit product  section
-const editproduct = async(req,res) => {
+const editproduct = async(req,res,next) => {
     try {
       const id = req.params.id
       const productData = await Product.findOne({_id:id}).populate('Category')
@@ -83,12 +83,12 @@ const editproduct = async(req,res) => {
       const adminData = await User.findById({_id:req.session.auser_id})
        res.render('editProductList',{admin:adminData,activePage: 'productList',category:categoryData,product:productData})
     } catch (error) {
-        console.log(error.message);
+        next(error)
     }
 }
 
 //  ------------- Update product  section
-const updateProduct = async (req,res) =>{
+const updateProduct = async (req,res,next) =>{
   if(req.body.product.trim() === "" || req.body.category.trim() === "" || req.body.description.trim() === "" || req.body.stock.trim() === "" || req.body.price.trim() === "") {
       const id = req.params.id
       const productData = await Product.findOne({_id:id}).populate('Category')
@@ -112,11 +112,12 @@ const updateProduct = async (req,res) =>{
         
           res.redirect('/admin/productList')
       } catch (error) {
-          console.log(error.message);
+        next(error)
       }
     }
 }
 
+//Delete image in the edit section
 const deleteimage = async (req, res, next) => {
     try {
       const imgid = req.params.imgid;

@@ -48,7 +48,7 @@ const wishlistLoad = async(req,res,next)=>{
 }
 
 
-
+// Add the product to wishlist
 const addToWishlist = async (req,res,next)=>{
     try{
       const userId = req.session.user_id;
@@ -100,6 +100,7 @@ const addToWishlist = async (req,res,next)=>{
       }
     }
 
+    // Delete wishlist
     const deleteWishlist = async (req, res,next) => {
      
       try {
